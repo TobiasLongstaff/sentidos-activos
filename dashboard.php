@@ -10,8 +10,8 @@
 ?>
     <div class="container-dashboard">
         <nav class="nav-dashboard">
-            <button class="btn-menu-general" id="btn-dashboard-agregar">Agregar</button>
-            <button class="btn-menu-general" id="btn-dashboard-editar">Editar</button>
+            <button class="btn-menu-general btn-menu-agregar" id="btn-dashboard-agregar"><i class="fas fa-angle-left"></i></button>
+            <button class="btn-menu-general btn-menu-editar" id="btn-dashboard-editar"><i class="fas fa-angle-right"></i></button>
         </nav>
         <div class="container-contenido-dashboard">
             <div class="container-catalogo-dashboard-agregar">
@@ -30,6 +30,7 @@
                             <textarea class="textarea-dashboard-general" id="descripcion" require=""></textarea>
                             <label>Descripcion</label>           
                         </div>            
+                        <progress class="barra-progreso" id="img-upload-bar" value="0" max="100"></progress>
                         <span class="btn-subir-imagen-producto">
                             <input type="file" name="btn-subir-imagen-producto" id="btn-subir-imagen-producto">
                         </span>
@@ -38,7 +39,6 @@
                             <i class="fas fa-paperclip"></i>
                             <span>Agregar Imágen</span> 
                         </label>
-                        <progress class="barra-progreso" id="img-upload-bar" value="0" max="100"></progress>
                         <div id="alerta-agregar-producto"></div>
                         <input type="submit" class="btn-login" value="Publicar">
                     </form>

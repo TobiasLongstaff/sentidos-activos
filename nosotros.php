@@ -10,8 +10,11 @@
             </div>
             <img src="assets/img/logo.jpg" alt="" class="img-nav-logo">
             <div class="container-reder">
-                <a href="https://www.instagram.com/sentidos.activos/?hl=en" target="_blank"><i class="btn-redes fab fa-instagram"></i></a>
-                <a href="https://m.facebook.com/Sentidos-Activos-109203394730618/?ref=bookmarks" target="_blank"><i class="btn-redes fab fa-facebook-square"></i></a>
+                <button type="button" class="btn-carro-de-compra"><i class="btn-redes fas fa-search"></i></button>
+                <button id="btn-carrito-compra" type="button" class="btn-carro-de-compra">
+                    <i class="btn-redes fas fa-shopping-cart"></i>
+                    <div id="cantidad-producto-carrito"></div>
+                </button>
             </div>
         </nav>
         <div class="container-presentacion">
@@ -30,7 +33,7 @@
         <div class="container-presentacion-presonal">
             
             <div class="container-card-presentacion">
-                <img class="img-presentacion" src="assets/img/paola.jpg" alt="">
+                <img class="img-presentacion" src="assets/img/lu.png" alt="">
                 <h2 class="text-titulo-resentacion">¡Hola! Soy Lucía Murias</h2>
                 <p>
                 Hasta el último año del colegio, estaba convencida de estudiar Ciencias Económicas; después de las vacaciones de invierno apareció un tsunami de emociones y me llevó a iniciar Orientación Vocacional. <br>

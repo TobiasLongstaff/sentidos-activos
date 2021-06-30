@@ -21,20 +21,8 @@
         <h1>Carrito <i class="fas fa-shopping-cart"></i></h1>
         <div class="container-table-carrito">
             <table class="table-carrito">
-                <tr id="tr-carrito">
-                    <div class="tr-carrito">
-                        <td><button class="btn-card-general btn-eliminar-producto-carro"><i class="fas fa-trash"></i></button> </td>
-                        <td><label class="text-producto-carrito">Smartwatch Amazfit Basic Bip U 1.43 Caja De Policarbonato</label></td>
-                        <td>
-                            <div class="container-cantidad">
-                                <button class="btn-cantidad">-</button>
-                                    <label>1</label>
-                                <button class="btn-cantidad">+</button>
-                            </div>
-                        </td>
-                        <td><span class="text-precio-carrito">$7.949</span></td>                        
-                    </div>
-                </tr>
+                <tbody id="tr-carrito">
+                </tbody>
             </table>            
         </div>
         <div class="container-total">

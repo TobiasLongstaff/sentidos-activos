@@ -9,8 +9,10 @@
     {
         $json[] = array(
             'producto' => $filas['producto'],
+            'descripcion' => $filas['descripcion'],
             'precio' => $filas['precio'],
             'id_producto' => $filas['id_producto'],
+            'id' => $filas['id'],
             'cantidad' => $filas['cantidad']
         );
     }

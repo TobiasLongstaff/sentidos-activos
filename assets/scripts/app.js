@@ -9,8 +9,9 @@ window.onload = function recargar_pagina()
 $(document).ready(() =>
 {
     obtener_catalogo();
-    obtener_card_catalogo()
-    obtener_cantidad_productos_carrito()
+    obtener_card_catalogo();
+    obtener_cantidad_productos_carrito();
+    obtener_productos_carrito();
 
     $('#btn-nosotros').click(function()
     {
@@ -25,6 +26,7 @@ $(document).ready(() =>
     $('#btn-carrito-compra').click(function()
     {
         $(location).attr('href','carrito.php');
+        obtener_productos_carrito();
     });
 
     $('#btn-dashboard-agregar').click(function()
@@ -343,18 +345,18 @@ $(document).ready(() =>
                     {
                         plantilla += 
                         `
-                        <div class="tr-carrito">
-                            <td><button class="btn-card-general btn-eliminar-producto-carro"><i class="fas fa-trash"></i></button> </td>
-                            <td><label class="text-producto-carrito">Smartwatch Amazfit Basic Bip U 1.43 Caja De Policarbonato</label></td>
-                            <td>
+                        <tr class="tr-carrito" filaId="${producto.id}">
+                            <td class="td-controles"><button class="btn-card-general btn-eliminar-producto-carro"><i class="fas fa-trash"></i></button></td>
+                            <td class="td-producto"><label class="text-producto-carrito">${producto.producto}</label></td>
+                            <td class="td-cantidad">
                                 <div class="container-cantidad">
                                     <button class="btn-cantidad">-</button>
-                                        <label>1</label>
+                                        <label>${producto.cantidad}</label>
                                     <button class="btn-cantidad">+</button>
                                 </div>
                             </td>
-                            <td><span class="text-precio-carrito">$7.949</span></td>                        
-                        </div>
+                            <td class="td-precio"><span class="text-precio-carrito">$${producto.precio}</span></td>                        
+                        </tr>
                         ` 
                     });
                     $('#tr-carrito').html(plantilla);

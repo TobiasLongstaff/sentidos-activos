@@ -49,6 +49,43 @@ $(document).ready(() =>
         $('.btn-menu-agregar').css('opacity', '1'); 
     });
 
+    $('.btn-cuenta').click(function()
+    {
+        $(location).attr('href','login.php');
+    });
+
+    $(document).on('click','.btn-cantidad_mas', function()
+    {
+        let producto = $('.contador-producto').html();
+        let precio = 0;
+        producto = parseInt(producto);
+
+        precio = $('.precio-producto').val();
+        precio = parseInt(precio);
+
+        producto = producto + 1;
+        let precio_final = precio * producto;
+
+        $('.precio-producto-label').text(precio_final);
+        $('.contador-producto').text(producto);
+    })
+
+    $(document).on('click','.btn-cantidad_menos', function()
+    {
+        let producto = $('.contador-producto').html();
+        producto = parseInt(producto);
+        if(producto > 0)
+        {
+            producto = producto - 1;
+            console.log(producto);
+            $('.contador-producto').text(producto);            
+        }
+        else
+        {
+            console.log(producto);
+        }
+    })
+
     $('#form-login').submit(function (e)
     {
         const postData =
@@ -155,11 +192,36 @@ $(document).ready(() =>
         e.preventDefault();
     });
 
+    $(document).on('click','.btn-eliminar-producto-carro',function(e)
+    {
+        let element = $(this)[0].parentElement.parentElement;
+        let id_producto = $(element).attr('filaid');
+        $.post('partials/eliminar-producto-carrito.php', {id_producto}, function (data)
+        {
+            console.log(data)
+            if(data == '1')
+            {
+                Swal.fire(
+                {
+                    icon: 'success',
+                    title: 'Producto eliminardo!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                obtener_productos_carrito();
+            }
+        })
+        e.preventDefault();
+    })
+
     $('#btn-agregar-carrito').click(function(e)
     {
-        let id_producto = document.getElementById('id-producto').value
-        $.post('partials/agregar-producto-carrito.php', {id_producto}, function (data)
+        let id_producto = document.getElementById('id-producto').value;
+        let cantidad_producto = $('.contador-producto').html();
+        let precio = $('#precio-producto').html();
+        $.post('partials/agregar-producto-carrito.php', {id_producto, cantidad_producto, precio}, function (data)
         {
+            console.log(data)
             if(data == '1')
             {
                 Swal.fire(
@@ -171,8 +233,23 @@ $(document).ready(() =>
                 })    
                 obtener_cantidad_productos_carrito();           
             }
+            else
+            {
+                Swal.fire(
+                {
+                    icon: 'warning',
+                    title: 'Este producto ya se encuentra agregado',
+                    showConfirmButton: false,
+                    timer: 1500
+                })    
+            }
         })
         e.preventDefault();
+    })
+
+    $('#btn-compra-mercadopago').click(function()
+    {
+        
     })
 
     $("#producto").keyup(function()
@@ -241,7 +318,6 @@ $(document).ready(() =>
                 type: 'GET',
                 success: function (response)
                 {
-                    console.log(response)
                     let productos = JSON.parse(response);
                     let plantilla = '';
                     productos.forEach(producto => 
@@ -349,11 +425,7 @@ $(document).ready(() =>
                             <td class="td-controles"><button class="btn-card-general btn-eliminar-producto-carro"><i class="fas fa-trash"></i></button></td>
                             <td class="td-producto"><label class="text-producto-carrito">${producto.producto}</label></td>
                             <td class="td-cantidad">
-                                <div class="container-cantidad">
-                                    <button class="btn-cantidad">-</button>
-                                        <label>${producto.cantidad}</label>
-                                    <button class="btn-cantidad">+</button>
-                                </div>
+                                <label class="contador-producto">${producto.cantidad}</label>
                             </td>
                             <td class="td-precio"><span class="text-precio-carrito">$${producto.precio}</span></td>                        
                         </tr>

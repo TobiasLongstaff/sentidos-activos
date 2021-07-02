@@ -59,6 +59,14 @@ body
 
 /* CONTAINER */
 
+.container-cantidad-producto
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
 .container-table-carrito
 {
     height: 400px;
@@ -448,7 +456,7 @@ body
     transition: .8s ease;
 }
 
-.btn-carro-de-compra
+.btn-carro-de-compra, .btn-cuenta
 {
     display: flex;
     background-color: transparent;
@@ -770,6 +778,13 @@ label[for="btn-subir-imagen-producto"]:hover
     font-size: 20px;
     color: var(--verde)
 
+}
+
+.text-head-general
+{
+    text-transform: uppercase;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
 }
 
 .text-producto-carrito

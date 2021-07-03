@@ -247,11 +247,6 @@ $(document).ready(() =>
         e.preventDefault();
     })
 
-    $('#btn-compra-mercadopago').click(function()
-    {
-        
-    })
-
     $("#producto").keyup(function()
     {
         var text_producto = $(this).val();

@@ -6,13 +6,15 @@
     {
         $usuario = $_POST['usuario'];
         $password = sha1($_POST['password']);
-        $sql = "SELECT usuario, password FROM usuarios WHERE usuario = '$usuario' AND password = '$password'";
+        $sql = "SELECT usuario, password, tipo FROM usuarios WHERE usuario = '$usuario' AND password = '$password'";
         $resultado = mysqli_query($conexion, $sql);
         $numero_fila = mysqli_num_rows($resultado);
         if($numero_fila == '1')
         {
             $data = mysqli_fetch_array($resultado);
             $_SESSION['usuario'] = $data['usuario'];
+            $_SESSION['tipo_usuario'] = $data['tipo'];
+
             echo '1';
         }
         else

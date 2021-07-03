@@ -11,6 +11,7 @@
                 <i class="btn-redes fas fa-shopping-cart"></i>
                 <div id="cantidad-producto-carrito"></div>
             </button>
+            <button type="button" class="btn-cuenta"><i class="btn-redes fas fa-user-circle"></i></button>
         </div>
     </nav>
     <div class="container-imgs">

@@ -59,6 +59,13 @@ body
 
 /* CONTAINER */
 
+.container-btn-registro
+{
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
 .container-cantidad-producto
 {
     display: flex;
@@ -440,6 +447,31 @@ body
 
 /* BOTONES */
 
+.btn-registro
+{
+    background-color: var(--secundario);
+    border-radius: 5px;
+    font-size: 17px;
+    padding: 14px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.btn-registro-google
+{
+    background-color: var(--rojo);
+    border-radius: 5px;
+    font-size: 17px;
+    padding: 14px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
 .btn-cantidad
 {
     background-color: transparent;
@@ -686,6 +718,7 @@ label[for="btn-subir-imagen-producto"]:hover
     font-size: 17px;
     cursor: pointer;
     outline-color: #b95bff;
+    margin-bottom: 10px;
 }
 
 .btn-login:hover
@@ -696,6 +729,11 @@ label[for="btn-subir-imagen-producto"]:hover
 }
 
 /* TEXT */
+
+.text-cuenta-login
+{
+    color: #9a9a9a;
+}
 
 .text-precio-total-carrito
 {

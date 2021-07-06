@@ -1,8 +1,11 @@
 <?php
 
     require 'conexion.php';
+    session_start();
 
-    $sql = "SELECT * FROM carrito WHERE id_usuario = '1'";
+    $id_usuario = $_SESSION['id_usuario'];
+
+    $sql = "SELECT * FROM carrito WHERE id_usuario = '$id_usuario'";
     $json = array();
     $resultado=mysqli_query($conexion,$sql);
     while($filas = mysqli_fetch_array($resultado))

@@ -1,4 +1,12 @@
 <?php
+
+    session_start();
+
+    if(!empty($_SESSION['usuario']))
+    {
+        header("location: cuenta.php");
+    }
+
     require 'partials/conexion.php';
     require_once 'assets/plugins/google-login-api/vendor/autoload.php';
     require_once 'partials/config.php';
@@ -30,10 +38,9 @@
             <label class="text-cuenta-login">No tenes una cuenta?</label>   
             <div class="container-btn-registro">
                 <a class="btn-registro-google" href='<?=$client->createAuthUrl()?>'>Login <i class="fab fa-google-plus-g"></i></a>  
-                <a href="" class="btn-registro">Registrarse</a>                   
+                <a href="registro.php" class="btn-registro">Registrarse</a>                 
             </div>   
         </form>
-
     </div>
     
     <script src="assets/plugins/jquery-3.5.1.min.js"></script>

@@ -1,46 +1,31 @@
 <?php
-    session_start();
-    if(!isset($_SESSION['usuario']))
+    require 'partials/header.html';
+    require 'partials/navegacion.php';
+    
+    if(empty($_SESSION['usuario']))
     {
         header("location: login.php");
     }
 
     $precio_total = $_SESSION['precio_total_usuario'];
 
-    include_once "assets/plugins/mercado-pago/vendor/autoload.php";
+    // include_once "assets/plugins/mercado-pago/vendor/autoload.php";
 
-    MercadoPago\SDK::setAccessToken('TEST-2816095668975026-062911-2670d33bb8f421ec81c0b6509059e7a4-187226896');
+    // MercadoPago\SDK::setAccessToken('TEST-2816095668975026-062911-2670d33bb8f421ec81c0b6509059e7a4-187226896');
 
-    $preference = new MercadoPago\Preference();
+    // $preference = new MercadoPago\Preference();
 
-    $item = new MercadoPago\Item();
-    $item->title      = "Mis Productos";
-    $item->currency_id = "ARS";
-    $item->quantity   = 1;
-    $item->unit_price = floatval($precio_total);
+    // $item = new MercadoPago\Item();
+    // $item->title      = "Mis Productos";
+    // $item->currency_id = "ARS";
+    // $item->quantity   = 1;
+    // $item->unit_price = floatval($precio_total);
 
-    $preference->items = array($item);
-    $preference->save();
-    
-    require 'partials/header.html';
+    // $preference->items = array($item);
+    // $preference->save();
+
 ?>
-
 <div>
-    <nav class="nav-catalogo">
-        <div class="container-btn-nav">
-            <button class="btn-nav-general" id="btn-catalogo">Catalogo</button>
-            <button class="btn-nav-general" id="btn-nosotros">Nosotros</button>
-        </div>
-        <img src="assets/img/logo.jpg" alt="" class="img-nav-logo">
-        <div class="container-reder">
-            <button type="button" class="btn-carro-de-compra"><i class="btn-redes fas fa-search"></i></button>
-            <button id="btn-carrito-compra" type="button" class="btn-carro-de-compra">
-                <i class="btn-redes fas fa-shopping-cart"></i>
-                <div id="cantidad-producto-carrito"></div>
-            </button>
-            <button type="button" class="btn-cuenta"><i class="btn-redes fas fa-user-circle"></i></button>
-        </div>
-    </nav>
     <div class="container-carrito-compra">
         <h1>Carrito <i class="fas fa-shopping-cart"></i></h1>
         <div class="container-table-carrito">
@@ -63,14 +48,17 @@
         </div>
         <div class="container-total">
             <label class="text-precio-total-carrito">Total: $<?=$precio_total?></label>
-            <form action="/procesar-pago" method="POST">
+            <a href="partials/verificar-info.php">
+                <button type="button" id="btn-realizar-pedido" class="btn-agregar-al-carro">Realizar pedido</button>
+            </a>
+            <!-- <form action="/procesar-pago" method="POST">
                 <input type="hidden" name="idprodct" value="2">
                 <script src="https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js" 
                 data-preference-id="<?php echo $preference->id; ?>">
                 </script>
-            </form>
+            </form> -->
         </div>
-    </div>
+    </div>    
 </div>
 
 <?php

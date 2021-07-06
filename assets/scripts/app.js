@@ -1,9 +1,11 @@
 window.onload = function recargar_pagina()
 {
     $('#form-login').css('opacity', '1'); 
+    $('#form-registro').css('opacity', '1'); 
     $('.container-catalogo-dashboard-agregar').css('opacity', '1'); 
     $('.btn-menu-editar').css('opacity', '1');
     $('.nav-catalogo').css('opacity', '1');
+    $('.container-info-pedido').css('opacity', '1');
 }
 
 $(document).ready(() =>
@@ -12,6 +14,7 @@ $(document).ready(() =>
     obtener_card_catalogo();
     obtener_cantidad_productos_carrito();
     obtener_productos_carrito();
+    obtener_datos_usuario();
 
     $('#btn-nosotros').click(function()
     {
@@ -27,6 +30,11 @@ $(document).ready(() =>
     {
         $(location).attr('href','carrito.php');
         obtener_productos_carrito();
+    });
+
+    $('#btn-dashboard').click(function()
+    {
+        $(location).attr('href','dashboard.php');
     });
 
     $('#btn-dashboard-agregar').click(function()
@@ -60,13 +68,13 @@ $(document).ready(() =>
         let precio = 0;
         producto = parseInt(producto);
 
-        precio = $('.precio-producto').val();
+        precio = $('#precio-producto').html();
         precio = parseInt(precio);
 
         producto = producto + 1;
         let precio_final = precio * producto;
 
-        $('.precio-producto-label').text(precio_final);
+        $('.precio-producto-label').val(precio_final);
         $('.contador-producto').text(producto);
     })
 
@@ -74,10 +82,20 @@ $(document).ready(() =>
     {
         let producto = $('.contador-producto').html();
         producto = parseInt(producto);
-        if(producto > 0)
+
+        let precio_total = $('.precio-producto-label').val();
+        precio_total = parseInt(precio_total);
+
+        if(producto > 1)
         {
             producto = producto - 1;
             console.log(producto);
+            
+            let precio = $('#precio-producto').html();
+            precio = parseInt(precio);
+            let precio_final = precio_total - precio;
+
+            $('.precio-producto-label').val(precio_final);
             $('.contador-producto').text(producto);            
         }
         else
@@ -97,7 +115,7 @@ $(document).ready(() =>
         {
             if(data == "1")
             {
-                $(location).attr('href','dashboard.php');
+                $(location).attr('href','index.php');
             }
             else
             {
@@ -111,6 +129,61 @@ $(document).ready(() =>
         }); 
         e.preventDefault();            
     });
+
+    $('#form-registro').submit(function (e)
+    {
+        const postData =
+        {
+            usuario: $('#usuario').val(),
+            mail: $('#mail').val(),
+            nombre_apellido: $('#nombre-apellido').val(),
+            password: $('#password').val(),
+            password_con: $('#password-con').val(),
+            documento: $('#documento').val(),
+            domicilio: $('#domicilio').val(),
+            telefono: $('#telefono').val()
+        };
+        $.post('partials/crear-cuenta.php', postData, function (data)
+        {
+            console.log(data);
+            if(data == "1")
+            {
+                $(location).attr('href','index.php');
+            }
+            else
+            {
+                let plantilla = '';
+                plantilla +=
+                `
+                    <span class="text-error"><i class="fas fa-exclamation-triangle"></i> ${data}</span>
+                `
+                $('#alerta-login').html(plantilla);  
+            }
+        }); 
+        e.preventDefault();            
+    });
+
+    $('#guardar-perfil').submit(function(e)
+    {
+        const postData =
+        {
+            nombre_apellido: $('#nombre-apellido').val(),
+            documento: $('#documento').val(),
+            telefono: $('#telefono').val(),
+            direccion: $('#direccion').val()
+        };
+        $.post('partials/guardar-perfil.php', postData, function (data)
+        {
+            console.log(data);
+            Swal.fire(
+                '¡Perfil actualizado correctamente!',
+                'Tu perfil ahora esta completo y puedes realizar compras en la pagina',
+                'success'
+            )
+            obtener_datos_usuario();
+        })
+        e.preventDefault();
+    })
 
     $('#form-agregar-catalogo').submit(function (e)
     {
@@ -208,7 +281,8 @@ $(document).ready(() =>
                     showConfirmButton: false,
                     timer: 1500
                 })
-                obtener_productos_carrito();
+                document.location.reload();
+
             }
         })
         e.preventDefault();
@@ -304,6 +378,24 @@ $(document).ready(() =>
         imagePreview.src = res.data.secure_url;
         document.getElementById('src-img').value = res.data.secure_url;
     });
+
+    function obtener_datos_usuario()
+    {
+        $.ajax(
+            {
+                url: 'partials/obtener-datos-usuario.php',
+                type: 'GET',
+                success: function (response)
+                {
+                    const usuario = JSON.parse(response);
+                    $('#nombre-apellido').val(usuario.nombre_apellido);
+                    $('#documento').val(usuario.documento);
+                    $('#telefono').val(usuario.telefono);
+                    $('#direccion').val(usuario.direccion);
+                }
+            }
+        )
+    }
 
     function obtener_cantidad_productos_carrito()
     {
@@ -410,23 +502,35 @@ $(document).ready(() =>
                 type: 'GET',
                 success: function (response)
                 {
-                    let productos = JSON.parse(response);
                     let plantilla = '';
-                    productos.forEach(producto => 
+                    if(response == '[]')
                     {
                         plantilla += 
-                        `
-                        <tr class="tr-carrito" filaId="${producto.id}">
-                            <td class="td-controles"><button class="btn-card-general btn-eliminar-producto-carro"><i class="fas fa-trash"></i></button></td>
-                            <td class="td-producto"><label class="text-producto-carrito">${producto.producto}</label></td>
-                            <td class="td-cantidad">
-                                <label class="contador-producto">${producto.cantidad}</label>
-                            </td>
-                            <td class="td-precio"><span class="text-precio-carrito">$${producto.precio}</span></td>                        
-                        </tr>
-                        ` 
-                    });
-                    $('#tr-carrito').html(plantilla);
+                        `<div class="container-carrito-productos">
+                            <h3>Tu carrito está vacío</h3><br>
+                            <label>¿No sabés qué comprar? ¡Muchos productos te esperan!</label>
+                        </div>`
+                        $('#tr-carrito').html(plantilla);
+                    }
+                    else
+                    {
+                        let productos = JSON.parse(response);
+                        productos.forEach(producto => 
+                        {
+                            plantilla += 
+                            `
+                            <tr class="tr-carrito" filaId="${producto.id}">
+                                <td class="td-controles"><button class="btn-card-general btn-eliminar-producto-carro"><i class="fas fa-trash"></i></button></td>
+                                <td class="td-producto"><label class="text-producto-carrito">${producto.producto}</label></td>
+                                <td class="td-cantidad">
+                                    <label class="contador-producto">${producto.cantidad}</label>
+                                </td>
+                                <td class="td-precio"><span class="text-precio-carrito">$${producto.precio}</span></td>                        
+                            </tr>
+                            ` 
+                        });
+                        $('#tr-carrito').html(plantilla);
+                    }
                 }
             }
         )

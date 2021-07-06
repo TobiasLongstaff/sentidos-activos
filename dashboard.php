@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if(!isset($_SESSION['usuario']) && $_SESSION['tipo_usuario'] != '1')
+    if(empty($_SESSION['usuario']) or $_SESSION['tipo_usuario'] != '1')
     {
         header("location: index.php");
     }
@@ -19,17 +19,17 @@
                     <form method="POST" id="form-agregar-catalogo">
                         <h1>Agregar Producto</h1>
                         <div class="container-textbox-dashboard">
-                            <input class="textbox-dashboard-general" id="producto" type="text" require="">
+                            <input class="textbox-dashboard-general" id="producto" type="text" required>
                             <label>Producto</label>
                         </div>
                         <div class="container-textbox-dashboard">
-                            <input class="textbox-dashboard-general" type="text" id="precio" require="">
+                            <input class="textbox-dashboard-general" type="text" id="precio" required>
                             <label>Precio</label>                
                         </div>
                         <div class="container-textbox-dashboard">
-                            <textarea class="textarea-dashboard-general" id="descripcion" require=""></textarea>
+                            <textarea class="textarea-dashboard-general" id="descripcion" required></textarea>
                             <label>Descripcion</label>           
-                        </div>            
+                        </div>
                         <progress class="barra-progreso" id="img-upload-bar" value="0" max="100"></progress>
                         <span class="btn-subir-imagen-producto">
                             <input type="file" name="btn-subir-imagen-producto" id="btn-subir-imagen-producto">

@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require 'partials/conexion.php';
     require 'partials/header.html'; 
     require 'partials/navegacion.php';
@@ -48,7 +49,10 @@
                 if($_SESSION['tipo_usuario'] == '1')
                 {
             ?>
-                    <button type="button" id="btn-dashboard">Dashboard</button>
+                    <div class="container-btn-dashboard">
+                        <button type="button" id="btn-dashboard-productos">Dashboard productos</button>
+                        <button type="button" id="btn-dashboard-pedidos">Dashboard pedidos</button>                        
+                    </div>
             <?php
                 }
             ?>

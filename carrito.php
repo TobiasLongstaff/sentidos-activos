@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require 'partials/header.html';
     require 'partials/navegacion.php';
     
@@ -48,9 +49,7 @@
         </div>
         <div class="container-total">
             <label class="text-precio-total-carrito">Total: $<?=$precio_total?></label>
-            <a href="partials/verificar-info.php">
-                <button type="button" id="btn-realizar-pedido" class="btn-agregar-al-carro">Realizar pedido</button>
-            </a>
+            <button type="button" id="btn-realizar-pedido" class="btn-agregar-al-carro">Realizar pedido</button>
             <!-- <form action="/procesar-pago" method="POST">
                 <input type="hidden" name="idprodct" value="2">
                 <script src="https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js" 

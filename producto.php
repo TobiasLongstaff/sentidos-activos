@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     require 'partials/conexion.php';
 
     if(isset($_GET['id']))

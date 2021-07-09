@@ -6,6 +6,7 @@ window.onload = function recargar_pagina()
     $('.btn-menu-editar').css('opacity', '1');
     $('.nav-catalogo').css('opacity', '1');
     $('.container-info-pedido').css('opacity', '1');
+    $('#form-buscar-dashboard-pedido').css('opacity', '1');
 }
 
 $(document).ready(() =>
@@ -15,6 +16,7 @@ $(document).ready(() =>
     obtener_cantidad_productos_carrito();
     obtener_productos_carrito();
     obtener_datos_usuario();
+    obtener_buscar_productos();
 
     $('#btn-nosotros').click(function()
     {
@@ -32,9 +34,35 @@ $(document).ready(() =>
         obtener_productos_carrito();
     });
 
-    $('#btn-dashboard').click(function()
+    $('#btn-realizar-pedido').click(function()
     {
-        $(location).attr('href','dashboard.php');
+        Swal.fire(
+        {
+            title: '¿Realizar pedido?',
+            text: "Una vez realizas este pedido se nos enviara un mail y nos contactaremos con usted para la entrega de los productos del pedido.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Continuar'
+        }).then((result) => 
+        {    
+            if(result.isConfirmed) 
+            {
+                $(location).attr('href','partials/verificar-info.php');
+            }
+        }) 
+    })
+
+    $('#btn-dashboard-productos').click(function()
+    {
+        $(location).attr('href','dashboard-productos.php');
+    });
+    
+    $('#btn-dashboard-pedidos').click(function()
+    {
+        $(location).attr('href','dashboard-pedidos.php');
     });
 
     $('#btn-dashboard-agregar').click(function()
@@ -45,6 +73,7 @@ $(document).ready(() =>
         $('.container-catalogo-dashboard-agregar').css('display', 'flex'); 
         $('.container-catalogo-dashboard-agregar').css('opacity', '1'); 
         $('.btn-menu-editar').css('opacity', '1'); 
+        $('.container-barra-busqueda-dashboard').css('opacity', '0'); 
     });
 
     $('#btn-dashboard-editar').click(function()
@@ -55,11 +84,55 @@ $(document).ready(() =>
         $('.container-catalogo-dashboard-editar').css('display', 'block');    
         $('.container-catalogo-dashboard-editar').css('opacity', '1'); 
         $('.btn-menu-agregar').css('opacity', '1'); 
+        $('.container-barra-busqueda-dashboard').css('opacity', '1'); 
     });
 
     $('.btn-cuenta').click(function()
     {
         $(location).attr('href','login.php');
+    });
+
+    $('#btn-carro-de-compra').click(function()
+    {
+        $(location).attr('href','buscar.php');
+        obtener_buscar_productos();
+    })
+
+    $('#btn-cerrar-popup').click(function()
+    {
+        $('#overlay').removeClass("active");
+        $('#popup').removeClass("active");
+    });
+
+    $(document).on('click','.btn-card-editar', function(e)
+    {
+        $('#overlay').addClass("active");
+        $('#popup').addClass("active"); 
+
+        let element = $(this)[0].parentElement.parentElement.parentElement;
+        let id_producto = $(element).attr('filaid');
+        
+        $.post('partials/obtener-producto-editar.php', {id_producto}, function (data)
+        {
+            let productos = JSON.parse(data);
+
+            let img_src = productos.src_imagen;
+
+            $('#id-producto-editar').val(id_producto);
+            $('#producto-editar').val(productos.producto);
+            $('#precio-editar').val(productos.precio);
+            $('#stock-editar').val(productos.stock);
+            $('#descripcion-editar').val(productos.descripcion);
+            $('#img-producto-editar').attr("src", img_src);
+
+            var producto_categoria = "op-"+productos.categoria;
+            producto_categoria = producto_categoria.replace(' ', '-').toLowerCase();
+
+            var selectlist_producto_categoria = document.getElementById(producto_categoria);
+            selectlist_producto_categoria.selected = true;
+        }); 
+
+        e.preventDefault();
     });
 
     $(document).on('click','.btn-cantidad_mas', function()
@@ -89,7 +162,6 @@ $(document).ready(() =>
         if(producto > 1)
         {
             producto = producto - 1;
-            console.log(producto);
             
             let precio = $('#precio-producto').html();
             precio = parseInt(precio);
@@ -145,7 +217,6 @@ $(document).ready(() =>
         };
         $.post('partials/crear-cuenta.php', postData, function (data)
         {
-            console.log(data);
             if(data == "1")
             {
                 $(location).attr('href','index.php');
@@ -174,7 +245,6 @@ $(document).ready(() =>
         };
         $.post('partials/guardar-perfil.php', postData, function (data)
         {
-            console.log(data);
             Swal.fire(
                 '¡Perfil actualizado correctamente!',
                 'Tu perfil ahora esta completo y puedes realizar compras en la pagina',
@@ -192,7 +262,9 @@ $(document).ready(() =>
             src_imagen: $('#src-img').val(),
             producto: $('#producto').val(),
             precio: $('#precio').val(),
-            descripcion: $('#descripcion').val()
+            descripcion: $('#descripcion').val(),
+            categoria: $('#selectlist-categoria').val(),
+            stock: $('#stock').val()
         };
         $.post('partials/agregar-producto.php', postData, function (data)
         {
@@ -200,6 +272,7 @@ $(document).ready(() =>
             {
                 const form = document.getElementById("form-agregar-catalogo");
                 form.reset();
+                obtener_card_catalogo();
                 Swal.fire(
                     '¡Producto agregado correctamente!',
                     'El producto ya se encuentra publicado correctamente',
@@ -219,10 +292,93 @@ $(document).ready(() =>
         e.preventDefault();         
     });
 
-    $(document).on('click','.btn-card-editar', function(e)
+    $('#form-buscar').submit(function (e)
     {
-        alert('editar');
+        let nombre_producto = $('#buscar').val()
 
+        $.post('partials/obtener-buscar-productos.php', {nombre_producto}, function (response)
+        {
+            let productos = JSON.parse(response);
+            let plantilla = '';
+            productos.forEach(producto => 
+            {
+                plantilla += 
+                `
+                <div filaId="${producto.id}" class="container-fila-buscar-producto">
+                    <img class="img-buscar-producto" src="${producto.src_imagen}">
+                    <div>
+                        <h3 class="text-nombre">${producto.nombre}</h3>
+                        <label class="text-descripcion-buscar">${producto.descripcion}</label>  
+                        <h2>$${producto.precio}</h2>                  
+                    </div>       
+                </div>
+                ` 
+            });
+            $('#container-productos-buscar').html(plantilla);
+        });
+        e.preventDefault();
+    });
+
+    $('#form-buscar-dashboard').submit(function (e)
+    {
+        let nombre_producto = $('#buscar').val()
+
+        $.post('partials/obtener-buscar-productos.php', {nombre_producto}, function (response)
+        {
+            let productos = JSON.parse(response);
+            let plantilla = '';
+            productos.forEach(producto => 
+            {
+                plantilla += 
+                `
+                <div filaId="${producto.id}" class="container-card-producto">
+                    <div class="container-card-info">
+                        <div>
+                            <button class="btn-card-general btn-card-editar"><i class="fas fa-pen"></i></button>
+                            <button class="btn-card-general btn-card-eliminar"><i class="fas fa-trash"></i></button>                                
+                        </div>
+                        <h3>${producto.nombre}</h3>
+                        <label class="text-descripcion">${producto.descripcion}</label>  
+                        <label>Stock: ${producto.stock}</label> 
+                        <label>${producto.categoria}</label> 
+                        <h3>$${producto.precio}</h3>                
+                    </div>
+                    <img class="img-card-producto" src="${producto.src_imagen}">
+                </div>
+                ` 
+            });
+            $('#card-editar').html(plantilla);
+        });
+        e.preventDefault();
+    });
+
+    $('#form-editar-producto').submit(function (e)
+    {
+        const postData =
+        {
+            id_producto: $('#id-producto-editar').val(),
+            producto: $('#producto-editar').val(),
+            precio: $('#precio-editar').val(),
+            descripcion: $('#descripcion-editar').val(),
+            categoria: $('#selectlist-categoria-editar').val(),
+            stock: $('#stock-editar').val(),
+            img_src: $('#src-img-editar').val()
+        };
+
+        $.post('partials/editar-producto.php', postData, function (response)
+        {
+            if(response == '1')
+            {
+                Swal.fire(
+                {
+                    icon: 'success',
+                    title: 'Producto eliminardo!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                obtener_card_catalogo();                
+            }
+        });
         e.preventDefault();
     });
 
@@ -244,7 +400,6 @@ $(document).ready(() =>
             {
                 let element = $(this)[0].parentElement.parentElement.parentElement;
                 let id_producto = $(element).attr('filaid');
-                console.log(id_producto);
                 $.post('partials/eliminar-producto.php', {id_producto}, function(data)
                 {
                     if(data == '1')
@@ -271,7 +426,6 @@ $(document).ready(() =>
         let id_producto = $(element).attr('filaid');
         $.post('partials/eliminar-producto-carrito.php', {id_producto}, function (data)
         {
-            console.log(data)
             if(data == '1')
             {
                 Swal.fire(
@@ -295,7 +449,6 @@ $(document).ready(() =>
         let precio = $('#precio-producto').html();
         $.post('partials/agregar-producto-carrito.php', {id_producto, cantidad_producto, precio}, function (data)
         {
-            console.log(data)
             if(data == '1')
             {
                 Swal.fire(
@@ -353,7 +506,6 @@ $(document).ready(() =>
     const CLOUDINARY_UPLOAD_PRESET = 'svzl7mgz';
 
     imageUploader.addEventListener('change', async (e) => {
-        // console.log(e);
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('file', file);
@@ -378,6 +530,65 @@ $(document).ready(() =>
         imagePreview.src = res.data.secure_url;
         document.getElementById('src-img').value = res.data.secure_url;
     });
+
+    const imageUploader_edit = document.getElementById('btn-subir-imagen-producto-editar');
+    const imagePreview_edit = document.getElementById('img-producto-editar');
+    const imageUploadbar_edit = document.getElementById('img-upload-bar-editar');
+
+    imageUploader_edit.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+        // Send to cloudianry
+        const res = await axios.post(
+            CLOUDINARY_URL,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress (e) {
+                    let progress = Math.round((e.loaded * 100.0) / e.total);
+                    console.log(progress);
+                    imageUploadbar_edit.setAttribute('value', progress);
+                }
+            }
+        );
+        console.log(res);
+        imagePreview_edit.src = res.data.secure_url;
+        document.getElementById('src-img-editar').value = res.data.secure_url;
+    });
+
+    function obtener_buscar_productos()
+    {
+        $.post('partials/obtener-buscar-productos.php', function (response)
+        {
+            let productos = JSON.parse(response);
+            let plantilla = '';
+            productos.forEach(producto => 
+            {
+                plantilla += 
+                `
+                <div filaId="${producto.id}" class="container-fila-buscar-producto">
+                    <img class="img-buscar-producto" src="${producto.src_imagen}">
+                    <div>
+                        <h3 class="text-nombre">${producto.nombre}</h3>
+                        <label class="text-descripcion-buscar">${producto.descripcion}</label>  
+                        <div class="container-btn-buscar">
+                            <h2>$${producto.precio}</h2>  
+                            <a href="producto.php?id=${producto.id}">
+                                <button class="btn-ver-producto">Ver</button>
+                            </a>
+                        </div>   
+                    </div>       
+                </div>
+                ` 
+            });
+            $('#container-productos-buscar').html(plantilla);
+        })
+    }
 
     function obtener_datos_usuario()
     {
@@ -447,7 +658,6 @@ $(document).ready(() =>
                                         <a href="producto.php?id=${producto.id}">
                                             <button class="btn-ver-producto">Ver</button>
                                         </a>
-                                        
                                     </div>               
                                 </div> 
                             </div>
@@ -480,9 +690,11 @@ $(document).ready(() =>
                                     <button class="btn-card-general btn-card-editar"><i class="fas fa-pen"></i></button>
                                     <button class="btn-card-general btn-card-eliminar"><i class="fas fa-trash"></i></button>                                
                                 </div>
-                                <h3 class="text-nombre">${producto.producto}</h3>
+                                <h3>${producto.producto}</h3>
                                 <label class="text-descripcion">${producto.descripcion}</label>  
-                                <h3>$${producto.precio}</h3>                      
+                                <label>Stock: ${producto.stock}</label> 
+                                <label>${producto.categoria}</label> 
+                                <h3>$${producto.precio}</h3>                
                             </div>
                             <img class="img-card-producto" src="${producto.src_img}">
                         </div>
@@ -535,7 +747,6 @@ $(document).ready(() =>
             }
         )
     }
-    
 });
 
 // SLIDE DE IMAGENES

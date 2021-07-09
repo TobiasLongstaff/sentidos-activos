@@ -12,7 +12,9 @@
             'src_img' => $filas['src_imagen'],
             'precio' => $filas['precio'],
             'descripcion' => $filas['descripcion'],
-            'producto' => $filas['producto']
+            'producto' => $filas['producto'],
+            'stock' => $filas['stock'],
+            'categoria' => $filas['categoria']
         );
     }
     $jsonstring = json_encode($json);

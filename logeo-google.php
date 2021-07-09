@@ -65,5 +65,5 @@
         }
     } 
 
-    echo("<script>location.href = /sentidos-activos/;</script>");
+    echo("<script>location.href = 'index.php'</script>");
 ?> 

@@ -44,9 +44,24 @@
                                 </div>
                                 <div class="container-catalogo-dashboard">
                                     <label>Categoria</label><br>
-                                    <select id="selectlist-categoria" class="selectlist-dashboard-general" required>
-                                        <option value="Prueba">Prueba</option>
-                                        <option value="prueba2">Prueba 2</option>
+                                        <select id="selectlist-categoria" class="selectlist-dashboard-general" required>
+                                        <option value="Integración sensorial" id="op-integración-sensorial">Integración sensorial</option>
+                                        <option value="Mordillos" id="op-mordillos">Mordillos</option>
+                                        <option value="Reglas" id="op-reglas">Reglas</option>
+                                        <option value="Libros móviles" id="op-libros-moviles">Libros móviles</option>
+                                        <option value="Cartas" id="op-cartas">Cartas</option>
+                                        <option value="Juegos de mesa" id="op-juegos-de-mesa">Juegos de mesa</option>
+                                        <option value="Rompecabezas" id="rompecabezas">Rompecabezas</option>
+                                        <option value="3 en 1" id="op-3-en-1">3 en 1</option>
+                                        <option value="Letras y Números" id="op-letras-y-numeros">Letras y Números</option>
+                                        <option value="Encastres" id="op-encastres">Encastres</option>
+                                        <option value="Juegos de Ingenio" id="op-juegos-de-ingenio">Juegos de Ingenio</option>
+                                        <option value="Pizarras" id="op-pizarras">Pizarras</option>
+                                        <option value="Juegos" id="op-juegos">Juegos</option>
+                                        <option value="Masas" id="op-masas">Masas</option>
+                                        <option value="Grips" id="op-grips">Grips</option>
+                                        <option value="Tijeras" id="op-tijeras">Tijeras</option>
+                                        <option value="Motricidad fina" id="op-motricidad-fina">Motricidad fina</option>
                                     </select>       
                                 </div>                            
                             </div>                            
@@ -121,8 +136,23 @@
                             <div class="container-catalogo-dashboard">
                                 <label>Categoria</label><br>
                                 <select id="selectlist-categoria-editar" class="selectlist-dashboard-general" required>
-                                    <option value="Prueba" id="op-prueba">Prueba</option>
-                                    <option value="Prueba 2" id="op-prueba2">Prueba2</option>
+                                    <option value="Integración sensorial" id="op-integración-sensorial">Integración sensorial</option>
+                                    <option value="Mordillos" id="op-mordillos">Mordillos</option>
+                                    <option value="Reglas" id="op-reglas">Reglas</option>
+                                    <option value="Libros móviles" id="op-libros-moviles">Libros móviles</option>
+                                    <option value="Cartas" id="op-cartas">Cartas</option>
+                                    <option value="Juegos de mesa" id="op-juegos-de-mesa">Juegos de mesa</option>
+                                    <option value="Rompecabezas" id="rompecabezas">Rompecabezas</option>
+                                    <option value="3 en 1" id="op-3-en-1">3 en 1</option>
+                                    <option value="Letras y Números" id="op-letras-y-numeros">Letras y Números</option>
+                                    <option value="Encastres" id="op-encastres">Encastres</option>
+                                    <option value="Juegos de Ingenio" id="op-juegos-de-ingenio">Juegos de Ingenio</option>
+                                    <option value="Pizarras" id="op-pizarras">Pizarras</option>
+                                    <option value="Juegos" id="op-juegos">Juegos</option>
+                                    <option value="Masas" id="op-masas">Masas</option>
+                                    <option value="Grips" id="op-grips">Grips</option>
+                                    <option value="Tijeras" id="op-tijeras">Tijeras</option>
+                                    <option value="Motricidad fina" id="op-motricidad-fina">Motricidad fina</option>
                                 </select>       
                             </div>                            
                         </div>

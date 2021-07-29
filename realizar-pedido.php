@@ -90,22 +90,23 @@
             }
 
             $nombre = 'Nuevo Pedido!';
-            $email = 'emp.sentidosactivos@gmail.com';
+            $email = 'no-reply@c2250383.ferozo.com';
 
             // Datos de la cuenta de correo utilizada para enviar vía SMTP
-            $smtpHost = "smtp.gmail.com";  // Dominio alternativo brindado en el email de alta 
-            $smtpUsuario = "emp.sentidosactivos@gmail.com";  // Mi cuenta de correo
-            $smtpClave = "Paolu2021";  // Mi contraseña
+            $smtpHost = "c2250383.ferozo.com";  // Dominio alternativo brindado en el email de alta 
+            $smtpUsuario = "no-reply@c2250383.ferozo.com";  // Mi cuenta de correo
+            $smtpClave = "qSbs2zpPlW";  // Mi contraseña
 
-            $emailDestino = "tobiaslongstaff@gmail.com";
+            $emailDestino = "emp.sentidosactivos@gmail.com";
 
             $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
             $mail->IsSMTP();
             $mail->SMTPAuth = true;
-            // $mail->Port = 465; 
-            $mail->Port = 587; 
-            // $mail->SMTPSecure = 'ssl';
-            $mail->SMTPSecure = 'tsl';
+            $mail->Port = 465; 
+            // $mail->Port = 587; 
+            $mail->SMTPSecure = 'ssl';
+            // $mail->SMTPSecure = 'tsl';
             $mail->IsHTML(true); 
             $mail->CharSet = "utf-8";
 
@@ -187,7 +188,7 @@
                             <h2 style="color: #7D7D7D;">Direccion: '.$direccion.'</h2>        
                             <h2 style="color: #7D7D7D;">Documento: '.$documento.'</h2>       
                             <h2 style="color: #7D7D7D;">Telefono: '.$telefono.'</h2>
-                            <a style="color: #ffffff;" href="http://localhost/sentidos-activos/dashboard-pedidos.php?id='.$id_pedido.'">Ver Pedido</a>   
+                            <a style="color: #ffffff;" href="https://sentidosactivos.com/dashboard-pedidos.php?id='.$id_pedido.'">Ver Pedido</a>   
                         </div>               
                     </div>
                 </div>
@@ -196,7 +197,7 @@
             $estadoEnvio = $mail->Send(); 
             if($estadoEnvio)
             {
-                echo "El correo fue enviado correctamente.";
+                // echo "El correo fue enviado correctamente.";
             } else 
             {
                 echo "Ocurrió un error inesperado.";

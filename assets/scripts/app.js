@@ -372,7 +372,7 @@ $(document).ready(() =>
                 Swal.fire(
                 {
                     icon: 'success',
-                    title: 'Producto eliminardo!',
+                    title: 'Producto Guardado!',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -459,6 +459,10 @@ $(document).ready(() =>
                     timer: 1500
                 })    
                 obtener_cantidad_productos_carrito();           
+            }
+            else if(data == '3')
+            {
+                $(location).attr('href','login.php');
             }
             else
             {

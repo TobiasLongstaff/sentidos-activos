@@ -55,4 +55,5 @@
             }
         }
     }
+    mysqli_close($conexion); 
 ?>

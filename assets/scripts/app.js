@@ -124,6 +124,7 @@ $(document).ready(() =>
             $('#stock-editar').val(productos.stock);
             $('#descripcion-editar').val(productos.descripcion);
             $('#img-producto-editar').attr("src", img_src);
+            $('#src-img-editar').val(img_src);
 
             var producto_categoria = "op-"+productos.categoria;
             producto_categoria = producto_categoria.replace(' ', '-').toLowerCase();
